@@ -17,8 +17,6 @@ $result = $router->match('/news');
 
 echo output($result);
 
-$router = new Router();
-
 $router->add(
     'controller-and-action',
     '/$my_controller/$action'
@@ -27,8 +25,6 @@ $router->add(
 $result = $router->match('/news/add');
 
 echo output($result);
-
-$router = new Router();
 
 $router->add(
     'optional-controller-and-action',
@@ -48,8 +44,6 @@ echo output($result);
 $result = $router->match('/');
 echo output($result);
 
-$router = new Router();
-
 $router->add(
     'optional-controller-and-action',
     '/($controller)(/$action)',
@@ -61,8 +55,6 @@ $router->add(
 
 $result = $router->match('/news/add?slug=some-slug&id=12');
 echo output($result);
-
-$router = new Router();
 
 $router->add(
     'in-place-regex',
@@ -79,8 +71,6 @@ echo output($result);
 $result = $router->match('/AB/add');
 echo output($result);
 
-$router = new Router();
-
 $router->add(
     'article-with-slug',
     '/$controller-$action(/^slug)',
@@ -94,8 +84,6 @@ $router->add(
 $result = $router->match('/news-add/some-article-title');
 echo output($result);
 
-$router = new Router();
-
 $router->add(
     'article-with-date-and-slug',
     '(/$controller)(/$action(.~format))(/#year-#month-#day)(/^slug)',
@@ -108,8 +96,6 @@ $router->add(
 
 $result = $router->match('/articles/2009-01-01/some-slug-for-article');
 echo output($result);
-
-$router = new Router();
 
 $router->add(
     'controller-action-id',
@@ -137,8 +123,6 @@ echo output($result);
 
 $routes = include 'routes.php';
 
-$router = new Router($routes);
-
 $result = $router->match('/news/add.xml/12/some-slug');
 echo output($result);
 
@@ -149,4 +133,63 @@ $result = $router->match('/news/add');
 echo output($result);
 
 $router->compile();
+
+$route = array(
+    'id' => 'article-with-date-and-slug',
+    'url' => array(
+        'controller' => 'articles',
+        'action' => 'index',
+        'year' => '2009'
+    ),
+    'data' => array(
+        'controller' => 'articles',
+        'action' => 'index',
+        'format' => 'html',
+        'year' => '2009',
+        'month' => '01',
+        'day' => '01',
+        'slug' => 'some-slug-for-article'
+    )
+);
+
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'year' => '2010',
+            'month' => '02',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'full'
+    )
+);
+
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'url'
+    )
+);
+
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'self'
+    )
+);
 ?>

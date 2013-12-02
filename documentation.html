@@ -25,8 +25,12 @@
         }
 
         ul {
-            list-style: none;
             margin: 0;
+            padding: 0 20px
+        }
+
+        ul.no-bullets {
+            list-style: none;
             padding: 0
         }
 
@@ -56,7 +60,7 @@
 
     <p>Router uses the following short codes for the common patterns:</p>
 
-    <ul>
+    <ul class="no-bullets">
         <li><strong>$</strong> - match the string according to php variable syntax ([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)</li>
         <li><strong>:</strong> - match alphanumeric string ([A-Za-z0-9]+)</li>
         <li><strong>#</strong> - match numeric string ([0-9]+)</li>
@@ -81,13 +85,18 @@ Result:
 
 Array
 (
-    [route] => controller-only
+    [url] => Array
+        (
+            [controller] => news
+        )
+
+    [id] => controller-only
     [data] => Array
         (
             [controller] => news
         )
-)
-    </pre>
+
+)</pre>
 
     <p>Named placeholders should consist from uppercase and lowercase letters and underscores only, without spaces, hyphens etc.
     e.g. $controller, :action, #some_id
@@ -107,14 +116,20 @@ Result:
 
 Array
 (
-    [route] => controller-and-action
+    [url] => Array
+        (
+            [my_controller] => news
+            [action] => add
+        )
+
+    [id] => controller-and-action
     [data] => Array
         (
             [my_controller] => news
             [action] => add
         )
-)
-    </pre>
+
+)</pre>
 
     <p>Optional parameters example</p>
 
@@ -137,12 +152,19 @@ Result:
 
 Array
 (
-    [route] => optional-controller-and-action
+    [url] => Array
+        (
+            [controller] => news
+            [action] => add
+        )
+
+    [id] => optional-controller-and-action
     [data] => Array
         (
             [controller] => news
             [action] => add
         )
+
 )
 
 $result = $router->match('/news');
@@ -151,12 +173,18 @@ Result:
 
 Array
 (
-    [route] => optional-controller-and-action
+    [url] => Array
+        (
+            [controller] => news
+        )
+
+    [id] => optional-controller-and-action
     [data] => Array
         (
             [controller] => news
             [action] => index
         )
+
 )
 
 $result = $router->match('/');
@@ -165,14 +193,18 @@ Result:
 
 Array
 (
-    [route] => optional-controller-and-action
+    [url] => Array
+        (
+        )
+
+    [id] => optional-controller-and-action
     [data] => Array
         (
             [controller] => index
             [action] => index
         )
-)
-    </pre>
+
+)</pre>
 
 <p>When using optional parameters, it makes sense to
 provide an array of default values as a third parameter
@@ -198,14 +230,21 @@ Result:
 
 Array
 (
-    [route] => optional-controller-and-action
+    [url] => Array
+        (
+            [controller] => news
+            [action] => add
+        )
+
+    [id] => optional-controller-and-action
     [data] => Array
         (
             [slug] => some-slug
             [id] => 12
-            [controller] => index
-            [action] => index
+            [controller] => news
+            [action] => add
         )
+
 )
 </pre>
 
@@ -235,12 +274,19 @@ $result = $router->match('/AB/add');
 
 Array
 (
-    [route] => in-place-regex
+    [url] => Array
+        (
+            [controller] => AB
+            [action] => add
+        )
+
+    [id] => in-place-regex
     [data] => Array
         (
             [controller] => AB
             [action] => add
         )
+
 )
 </pre>
 
@@ -265,7 +311,14 @@ Result:
 
 Array
 (
-    [route] => article-with-slug
+    [url] => Array
+        (
+            [controller] => news
+            [action] => add
+            [slug] => some-article-title
+        )
+
+    [id] => article-with-slug
     [data] => Array
         (
             [controller] => news
@@ -273,6 +326,7 @@ Array
             [format] => html
             [slug] => some-article-title
         )
+
 )
 </pre>
 
@@ -295,7 +349,16 @@ Result:
 
 Array
 (
-    [route] => article-with-date-and-slug
+    [url] => Array
+        (
+            [controller] => articles
+            [year] => 2009
+            [month] => 01
+            [day] => 01
+            [slug] => some-slug-for-article
+        )
+
+    [id] => article-with-date-and-slug
     [data] => Array
         (
             [controller] => articles
@@ -306,6 +369,7 @@ Array
             [day] => 01
             [slug] => some-slug-for-article
         )
+
 )
 </pre>
 
@@ -409,6 +473,102 @@ $router->compile();
         'regex' =&gt; '/^(?:\/(?P&lt;controller&gt;[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*))?(?:\/(?P&lt;action&gt;[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(?:\.(?P&lt;format&gt;[a-z]{2,4}))?)?(?:\/(?P&lt;id&gt;[0-9]+))?(?:\/(?P&lt;slug&gt;[A-Za-z0-9\-]+))?$/D',
             ),
 ); ?&gt;
+</pre>
+
+<h2>URL generation</h2>
+
+<p>URLs can be generated using Router::url() method, which accepts 3 arguments:</p>
+
+<ul>
+    <li>$params - associative array of keys and values that should be replaced</li>
+    <li>$route - matched route (optional, if not provided, the last matched route will be used)</li>
+    <li>$type - can be:
+        <ul>
+            <li>'url' (default) - $params will be merged with the route url array</li>
+            <li>'full' (default) - $params will be merged with the route full data array</li>
+            <li>'self' - no merge will be performed
+        </ul>
+    </li>
+</ul>
+
+<p>For example, Router matched the following:</p>
+
+<pre>
+$route = array(
+    'id' => 'article-with-date-and-slug',
+    'url' => array(
+        'controller' => 'articles',
+        'action' => 'index',
+        'year' => '2009'
+    ),
+    'data' => array(
+        'controller' => 'articles',
+        'action' => 'index',
+        'format' => 'html',
+        'year' => '2009',
+        'month' => '01',
+        'day' => '01',
+        'slug' => 'some-slug-for-article'
+    )
+);</pre>
+
+<p>URL generated with 'full' type set:</p>
+
+<pre>
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'year' => '2010',
+            'month' => '02',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'full'
+    )
+);
+
+Result: '/test/view.json/2010-02-01/some-slug-for-article'
+</pre>
+
+<p>URL generated with 'url' type set:</p>
+
+<pre>
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'url'
+    )
+);
+
+Result: '/test/view.json/2009'
+</pre>
+
+<p>URL generated with 'self' type set:</p>
+
+<pre>
+var_dump(
+    $router->url(
+        array(
+            'controller' => 'test',
+            'action' => 'view',
+            'format' => 'json',
+            'asdf' => 'asd' // non-existing parameter, will be filtered
+        ),
+        $route,
+        'self'
+    )
+);
+
+Result: '/test/view.json'
 </pre>
 
 </div>

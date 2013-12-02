@@ -39,6 +39,11 @@ class Router
     );
 
     /**
+     * @var array - last matched route
+     */
+    private $lastMatch = array();
+
+    /**
      * Constructor
      *
      * @param array $routes - predefined routes array
@@ -81,6 +86,8 @@ class Router
 
                     $matches = array_filter($matches);
 
+                    $result['url'] = $matches;
+
                     if (isset($route['defaults'])) {
                         $matches = array_merge($route['defaults'], $matches);
                     }
@@ -90,13 +97,17 @@ class Router
                         $matches = array_merge($query, $matches);
                     }
 
-                    $result['route'] = $name;
+                    $result['id'] = $name;
                     $result['data'] = $matches;
+
+                    $this->lastMatch = $result;
 
                     break;
                 }
             }
         }
+
+        $this->lastMatch = $result;
 
         return $result;
     }
@@ -183,6 +194,69 @@ class Router
         }
 
         $result .= '$/D';
+
+        return $result;
+    }
+
+    /**
+     * Generate URL with specified parameters
+     * based on the previously matched route
+     *
+     * @param array $params - parameters to join or replace to route array
+     * @param array $route - previously parsed route from Router::match() method
+     * @param string $type - type of URL
+     * full - $params will be merged with the full route
+     * url - $params will be merged with the route url array (default)
+     * self - no merge will be preformed
+     * @return string - constructed URL
+     */
+    public function url($params, $route = null, $type = 'url')
+    {
+        $result = '';
+
+        if ($route === null) {
+            $route = $this->lastMatch;
+        }
+
+        $data = $route['data'];
+        $id = $route['id'];
+        $url = $route['url'];
+
+        $ruleRoute = $this->routes[$id]['route'];
+        $pattern = '/(?:(?P<delims>[\/|\.|-]))(?:\()?[$|:|#|*|~|^](?P<placeholders>[a-z]+)/';
+
+        preg_match_all($pattern, $ruleRoute, $matches);
+
+        if (!empty($matches)) {
+            foreach ($matches as $k => $match) {
+                if (is_numeric($k)) {
+                    unset($matches[$k]);
+                }
+            }
+
+            switch ($type) {
+                case 'url':
+                    $data = array_merge($url, $params);
+                    break;
+                case 'full':
+                    $data = array_merge($data, $params);
+                    break;
+                case 'self':
+                    $data = $params;
+                    break;
+            }
+
+            $groupData = array_intersect_key(
+                array_combine($matches['placeholders'], $matches['delims']),
+                $data
+            );
+
+            $data = array_intersect_key($data, $groupData);
+
+            foreach ($groupData as $placeholder => $delim) {
+                $result .= $delim . $data[$placeholder];
+            }
+        }
 
         return $result;
     }
