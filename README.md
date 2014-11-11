@@ -2,15 +2,20 @@ Router
 =================
 
 This PHP class matches url against predefined route patterns.
-Routes follow simple DSL syntax, Router converts them to 
-regular expressions and performs match on a first-match basis.
+
+Features
+
+* Routes can be attached to HTTP methods, and follow simple DSL syntax.
+* Uses short codes for the frequently used patterns
+* Provides possibility to add user defined tokens with matching regex.
+* Reverse generate url from a specified route name.
 
 Copyright and License
 ---------------------
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Mark Rolich
+Copyright (c) 2014 Mark Rolich
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
