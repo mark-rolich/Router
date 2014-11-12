@@ -323,7 +323,7 @@ class Router
             $regex .= $chunk;
         }
 
-        return '/' . $regex . '/';
+        return '/^' . $regex . '$/D';
     }
 
     /**
