@@ -1,5 +1,5 @@
 <?php
-$router = new Router();
+$router = new Core\Router();
 
 $router->add('optional-controller-and-action-with-defaults',
     array(

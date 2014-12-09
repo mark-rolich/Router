@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="src/Router.php">
+  <testsuites>
+    <testsuite name="general">
+      <file>tests/RouterTest.php</file>
+    </testsuite>
+    <testsuite name="exceptions">
+      <file>tests/RouterExceptionTest.php</file>
+    </testsuite>
+      <testsuite name="setup">
+          <file>tests/RouterSetupTest.php</file>
+      </testsuite>
+      <testsuite name="url">
+          <file>tests/RouterUrlTest.php</file>
+      </testsuite>
+  </testsuites>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
+</phpunit>

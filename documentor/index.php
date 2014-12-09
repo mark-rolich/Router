@@ -258,7 +258,9 @@
 
         <p>Result:</p>
 
-        <?php echo codeString($result); ?>
+        <?php
+        echo '<div class="code-block"><div class="code">' . highlight_string($result, true) . '</div></div>';
+        ?>
 
     <h2><a name="url">Reverse URL generation for a given route</a></h2>
 

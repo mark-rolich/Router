@@ -1,6 +1,6 @@
 <?php
 try {
-    $router = new Router();
+    $router = new Core\Router();
 
     $router->add('all-methods',
         array(
@@ -10,7 +10,7 @@ try {
     );
 
     $result = $router->match('PUT', '/news');
-} catch (RouterException $e) {
+} catch (Core\RouterException $e) {
     $result = $e->getMessage();
 }
 ?>

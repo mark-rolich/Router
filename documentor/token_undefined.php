@@ -1,5 +1,5 @@
 <?php
-$router = new Router();
+$router = new Core\Router();
 
 $router->add('user-defined-token',
     array(
@@ -9,7 +9,7 @@ $router->add('user-defined-token',
 );
 try {
     $result = $router->match('GET', '/news/view/12');
-} catch (RouterException $e) {
+} catch (Core\RouterException $e) {
     if ($e->getCode() === 0) {
         $result = $e->getMessage();
     }

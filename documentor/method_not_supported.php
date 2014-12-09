@@ -1,6 +1,6 @@
 <?php
 try {
-    $router = new Router();
+    $router = new Core\Router();
 
     $router->add('controller-only',
         array(
@@ -10,7 +10,7 @@ try {
     );
 
     $result = $router->match('GET', '/news');
-} catch (RouterException $e) {
+} catch (Core\RouterException $e) {
     if ($e->getCode() === 1) {
         $result = $e->getMessage();
     }

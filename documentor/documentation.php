@@ -1,5 +1,5 @@
 <?php
-include '../Router.php';
+include '../src/Router.php';
 
 function codeFile($filename) {
     return '<div class="code-block"><div class="code">' . highlight_file($filename, true) . '</div></div>';

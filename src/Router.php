@@ -1,5 +1,10 @@
 <?php
 /**
+ * @package Core
+ */
+namespace Core;
+
+/**
  * Class Router
  */
 
@@ -361,13 +366,13 @@ class Router
                 $regex = $route['regex'];
             }
 
-            $this->routes[$name]['regex'] = htmlspecialchars($regex);
+            $this->routes[$name]['regex'] = $regex;
         }
 
         if ($return) {
             return $this->routes;
         } else {
-            echo '<pre>&lt;?php return ' . stripcslashes(var_export($this->routes, true)) . '; ?&gt;</pre>';
+            return '<?php return ' . stripcslashes(var_export($this->routes, true)) . '; ?>';
         }
     }
 }
@@ -375,14 +380,10 @@ class Router
 /**
  * Class RouterException
  */
-class RouterException extends Exception
+class RouterException extends \Exception
 {
-    public function __construct($message, $code = 0, Exception $previous = null) {
+    public function __construct($message, $code = 0, \Exception $previous = null) {
         parent::__construct($message, $code, $previous);
-    }
-
-    public function __toString() {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
 }
 ?>
