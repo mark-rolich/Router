@@ -1,7 +1,7 @@
 {
     "name": "bike/router",
     "description": "Regular expression based URL router",
-    "version": "1.1",
+    "version": "1.0.1",
     "keywords": ["router", "url", "routing", "regex"],
     "homepage": "https://github.com/mark-rolich/Router",
     "license": "MIT",
