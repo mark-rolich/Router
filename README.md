@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/mark-rolich/Router.svg?branch=master)](https://travis-ci.org/mark-rolich/Router)
+[![Coverage Status](https://img.shields.io/coveralls/mark-rolich/Router.svg)](https://coveralls.io/r/mark-rolich/Router)
 
 Router
 =================
