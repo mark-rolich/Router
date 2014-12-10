@@ -14,6 +14,8 @@ Features
 * Provides possibility to add user defined tokens with matching regex.
 * Reverse generate url from a specified route name.
 
+<a href="http://mark-rolich.github.io/Router/" target="_blank"><strong>Full documentation</strong></a>
+
 Copyright and License
 ---------------------
 
