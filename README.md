@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/mark-rolich/Router.svg?branch=master)](https://travis-ci.org/mark-rolich/Router)
 [![Coverage Status](https://img.shields.io/coveralls/mark-rolich/Router.svg)](https://coveralls.io/r/mark-rolich/Router)
-[![Latest Stable Version](https://poser.pugx.org/bike/router/v/stable.svg)](https://packagist.org/packages/bike/router)
 [![License](https://poser.pugx.org/bike/router/license.svg)](https://packagist.org/packages/bike/router)
 
 Router
