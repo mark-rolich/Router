@@ -1,5 +1,5 @@
 <?php
-$router = new Core\Router();
+$router = new Bike\Router();
 
 $router->add('optional-controller-and-action',
     array(

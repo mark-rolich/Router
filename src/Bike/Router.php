@@ -1,8 +1,8 @@
 <?php
 /**
- * @package Core
+ * @package Bike
  */
-namespace Core;
+namespace Bike;
 
 /**
  * Class Router

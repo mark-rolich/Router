@@ -1,5 +1,5 @@
 <?php
-use Core\Router;
+use Bike\Router;
 
 class RouterUrlTest extends PHPUnit_Framework_TestCase
 {

@@ -1,5 +1,5 @@
 <?php
-$router = new Core\Router();
+$router = new Bike\Router();
 
 $router->addToken('y', '[0-9]{4}');
 $router->addToken('m', '[0-9]{2}');

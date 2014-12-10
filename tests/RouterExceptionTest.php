@@ -1,10 +1,10 @@
 <?php
-use Core\Router;
+use Bike\Router;
 
 class RouterExceptionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException Core\RouterException
+     * @expectedException Bike\RouterException
      * @expectedExceptionMessage Method PUT is not allowed
      * @expectedExceptionCode 2
      */
@@ -23,7 +23,7 @@ class RouterExceptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Core\RouterException
+     * @expectedException Bike\RouterException
      * @expectedExceptionMessage Method TEST is not supported
      * @expectedExceptionCode 1
      */
@@ -75,7 +75,7 @@ class RouterExceptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Core\RouterException
+     * @expectedException Bike\RouterException
      * @expectedExceptionMessage Token "page" is not defined
      * @expectedExceptionCode 0
      */

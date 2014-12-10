@@ -1,5 +1,5 @@
 <?php
-$router = new Core\Router();
+$router = new Bike\Router();
 
 $router->addToken('page', '[0-9]+');
 

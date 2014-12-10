@@ -1,7 +1,7 @@
 <?php
 $routes = include 'predefined_routes.php';
 
-$router = new Core\Router($routes);
+$router = new Bike\Router($routes);
 
 $result = $router->compile(false);
 ?>

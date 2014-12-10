@@ -1,6 +1,9 @@
 <?php
+use Bike\Router;
+use Bike\RouterException;
+
 try {
-    $router = new Core\Router();
+    $router = new Router();
 
     $router->add('controller-only',
         array(
@@ -10,7 +13,7 @@ try {
     );
 
     $result = $router->match('PUT', '/news');
-} catch (Core\RouterException $e) {
+} catch (RouterException $e) {
     if ($e->getCode() === 2) {
         $result = $e->getMessage();
     }

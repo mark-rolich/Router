@@ -1,5 +1,6 @@
 <?php
-include '../src/Router.php';
+//include '../src/Bike/Router.php';
+include '../vendor/autoload.php';
 
 function codeFile($filename) {
     return '<div class="code-block"><div class="code">' . highlight_file($filename, true) . '</div></div>';
