@@ -1,0 +1,66 @@
+html, body {
+    font: 13px Arial;
+    margin: 0;
+    padding: 10px
+}
+
+code {
+    font: 13px monospace;
+}
+
+h1, h2 {
+    margin: 0
+}
+
+h1 {
+    font-size: 21px
+}
+
+h2 {
+    font-size: 16px;
+    margin-top: 25px;
+    padding: 10px 10px 10px 0;
+    border-bottom: solid 1px #aaa;
+}
+
+ul {
+    margin: 0;
+    padding: 0 20px
+}
+
+ul.no-bullets {
+    list-style: none;
+    padding: 0
+}
+
+.toc {
+    background-color: #f9f9f9;
+    border: solid 1px #aaa;
+    display: inline-block;
+    margin: 25px 0 10px 0;
+    padding: 10px;
+    font-size: 95%
+}
+
+.toc p {
+    text-align: center;
+    margin: 0
+}
+
+.toc li {
+    margin: 5px 0
+}
+
+.code {
+    border: solid 1px #ddd;
+    border-radius: 7px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    display: inline-block;
+}
+
+.main-wrapper {
+    width: 100%;
+    height: 100%
+}
