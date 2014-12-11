@@ -1,22 +1,15 @@
 <?php
-use Bike\Router;
-use Bike\RouterException;
+$router = new Bike\Router();
 
-$router = new Router();
+$router->addToken('non_static_1', '[a-z]+');
+$router->addToken('non_static_2', '[a-z]+');
 
 $router->add('user-defined-token',
     array(
         'method' => 'GET, POST',
-        'route' => '(/controller(/action(/page)))'
+        'route' => '/non_static_1/undefined/non_static_2'
     )
 );
-try {
-    $result = $router->match('GET', '/news/view/12');
-} catch (RouterException $e) {
-    if ($e->getCode() === 0) {
-        $result = $e->getMessage();
-    }
-}
 
-// output: Token "page" is undefined
+$result = $router->match('GET', '/some/undefined/tokens');
 ?>

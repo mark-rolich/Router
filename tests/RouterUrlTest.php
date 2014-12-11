@@ -21,6 +21,25 @@ class RouterUrlTest extends PHPUnit_Framework_TestCase
                 )
             )
         );
+
+        $this->router->add('static',
+            array(
+                'method' => 'GET, POST',
+                'route' => '/some/one/static/path',
+                'defaults' => array(
+                    'controller' => 'index',
+                    'action' => 'index',
+                    'format' => 'html'
+                )
+            )
+        );
+
+        $this->router->add('static-and-dynamic',
+            array(
+                'method' => 'GET, POST',
+                'route' => '/r/$subreddit/comments/$thread_id/$thread_slug/'
+            )
+        );
     }
 
     public function testSkipOnEmptyFalse()
@@ -43,6 +62,28 @@ class RouterUrlTest extends PHPUnit_Framework_TestCase
         ), 'url', true);
 
         $expected = '/news/2';
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function testStaticUrl()
+    {
+        $result = $this->router->url(array(), 'static');
+
+        $expected = '/some/one/static/path';
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function testStaticAndDynamicUrl()
+    {
+        $result = $this->router->url(array(
+            'subreddit' => 'javascript',
+            'thread_id' => '10',
+            'thread_slug' => 'router',
+        ), 'static-and-dynamic');
+
+        $expected = '/r/javascript/comments/10/router';
 
         $this->assertSame($expected, $result);
     }

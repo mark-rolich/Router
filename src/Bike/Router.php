@@ -192,7 +192,7 @@ class Router
     {
         $result = '';
         $regexUserTokens = implode('|', array_keys($this->userTokens));
-        $pattern = '/(?:(?P<delims>[\/|\.|-]))(?:\()?(?:[$|:|#|*|~|^])?(?P<placeholders>(' . $regexUserTokens . '|[a-z]+))/';
+        $pattern = '/(?:(?P<delims>[\/|\.|-]))(?:\()?(?:[$|:|#|*|~|^])?(?P<placeholders>(' . $regexUserTokens . '|[a-z_]+))/';
 
         if (isset($this->routes[$routeName])) {
             $route = $this->routes[$routeName]['route'];
@@ -214,8 +214,11 @@ class Router
                 foreach ($data as $placeholder => $delim) {
                     if (isset($params[$placeholder])) {
                         $result .= $delim . $params[$placeholder];
-                    } elseif (isset($defaults[$placeholder]) && !$skipOnEmpty) {
-                        $result .= $delim . $defaults[$placeholder];
+                    } else if (!$skipOnEmpty) {
+                        $result .= $delim;
+                        $result .= isset($defaults[$placeholder])
+                            ? $defaults[$placeholder]
+                            : $placeholder;
                     }
                 }
             }
@@ -289,6 +292,15 @@ class Router
 
         array_push($tokens, $pattern);
 
+        foreach ($tokens as $k => $token) {
+            if ($token[0] === 'T_NAMED_GROUP' &&
+                !array_key_exists($token[1], $this->userTokens) &&
+                $tokens[$k + 1][0] !== 'T_PATTERN'
+            ) {
+                $tokens[$k][0] = 'T_STATIC';
+            }
+        }
+
         return $tokens;
     }
 
@@ -296,29 +308,25 @@ class Router
      * Parse tokens to regular expression
      *
      * @param $tokens - tokens array
-     * @throws RouterException
      * @return string - regular expression
      */
     private function parse($tokens)
     {
         $regex = '';
+        $j = 0;
 
         foreach ($tokens as $i => $tokenData) {
             $chunk = $tokenData[1];
 
             if ($tokenData[0] === 'T_NAMED_GROUP') {
-
-                $nextTokenData = $tokens[$i + 1];
-
                 $chunk = '(?P<' . $chunk . '>';
 
-                if ($nextTokenData[0] !== 'T_PATTERN') {
-                    if (!isset($this->userTokens[$tokenData[1]])) {
-                        throw new RouterException('Token "' . $tokenData[1] . '" is not defined', 0);
-                    } else {
-                        $chunk .= $this->userTokens[$tokenData[1]] . ')';
-                    }
+                if ($tokens[$i + 1][0] !== 'T_PATTERN') {
+                    $chunk .= $this->userTokens[$tokenData[1]] . ')';
                 }
+            } else if ($tokenData[0] === 'T_STATIC') {
+                $chunk = '(?P<static' . $j . '>' . $tokenData[1] . ')';
+                $j++;
             }
 
             if ($tokenData[0] === 'T_PATTERN') {

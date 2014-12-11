@@ -84,6 +84,17 @@
 
         <p>If no method is specified, the route will accept only GET requests by default.</p>
 
+        <p>You can mix static and dynamic parts in the route:</p>
+
+        <?php
+        include 'static_dynamic.php';
+        echo codeFile('static_dynamic.php');
+        ?>
+
+        <p>Result:</p>
+
+        <?php echo codeString($result); ?>
+
         <p>If route will be requested using not acceptable HTTP method, RouterException with code 2 will be thrown
             (which can be used to send appropriate HTTP header):</p>
 
@@ -190,12 +201,16 @@
 
         <?php echo codeString($result); ?>
 
-        <p>If route will use undefined token, RouterException with code 0 will be thrown:</p>
+        <p>If route will use undefined token, Router will consider it as a static part of the route:</p>
 
         <?php
         include 'token_undefined.php';
         echo codeFile('token_undefined.php');
         ?>
+
+        <p>Result:</p>
+
+        <?php echo codeString($result); ?>
 
     <h2><a name="other">Other examples</a></h2>
 

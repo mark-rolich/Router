@@ -75,22 +75,22 @@ class RouterExceptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Bike\RouterException
-     * @expectedExceptionMessage Token "page" is not defined
-     * @expectedExceptionCode 0
+     * @expectedException PHPUnit_Framework_Error_Warning
      */
-    public function testUndefinedToken()
+    public function testRepeatingTokens()
     {
         $router = new Router();
 
-        $router->add('user-defined-token',
+        $router->addToken('r', '[a-z]+');
+
+        $router->add('repeating-tokens',
             array(
                 'method' => 'GET, POST',
-                'route' => '(/controller(/action(/page)))'
+                'route' => '/r/r/$subreddit/comments/#thread_id/$thread_slug/'
             )
         );
 
-        $router->match('GET', '/news/view/12');
+        $router->match('GET', '/r/r/php/comments/12/router/');
     }
 }
 
